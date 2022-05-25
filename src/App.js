@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 
 function App() {
+  const [rickandmorty, setRickandmorty] = useState([]);
+  function name(name) {
+    console.log(name);
+  }
+  // const name = (name) => {
+  //   console.log(name);
+  // };
+  useEffect(() => {
+    axios
+      .get("https://rickandmortyapi.com/api/character")
+      .then((data) => {
+        setRickandmorty(data.data.results);
+        console.log(data.data.results);
+      })
+      .catch((e) => console.log(e));
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {rickandmorty.map((p) => (
+        <div>
+          <h2>{p.name}</h2>
+          <img src={p.image} alt="img" />
+          <button onClick={() => name(p.name)}>Get Name</button>
+        </div>
+      ))}
     </div>
   );
 }
